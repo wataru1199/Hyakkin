@@ -1,5 +1,15 @@
 Rails.application.routes.draw do
-  get 'homes/top'
-  get 'homes/about'
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  devise_for :admins
+  devise_for :members
+
+  scope module: :public do
+    root :to => "homes#top"
+    get 'homes/about'
+    resources :reviews, only: [:index, :new, :create, :show, :edit, :update, :destroy]
+  end
+  
+  namespace :admin do
+    resources :reviews, only: [:index, :show, :destroy]
+  end
+
 end
